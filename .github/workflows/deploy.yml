@@ -113,17 +113,17 @@ jobs:
 
       - name: Validate QAS health endpoint
         run: |
-          curl -f "${{ vars.MODAL_BASE_URL }}/health"
+          curl -f "${{ vars.MODAL_BASE_URL }}/api/v1/health"
 
       - name: Capture QAS github-ascii endpoint
         run: |
           mkdir -p artifacts/qas
 
           echo "QAS Endpoint:" > artifacts/qas/qas-github-ascii.txt
-          echo "${{ vars.MODAL_BASE_URL }}/github-ascii" >> artifacts/qas/qas-github-ascii.txt
+          echo "${{ vars.MODAL_BASE_URL }}/api/v1/github-ascii" >> artifacts/qas/qas-github-ascii.txt
           echo "" >> artifacts/qas/qas-github-ascii.txt
 
-          curl -f "${{ vars.MODAL_BASE_URL }}/github-ascii" >> artifacts/qas/qas-github-ascii.txt
+          curl -f "${{ vars.MODAL_BASE_URL }}/api/v1/github-ascii" >> artifacts/qas/qas-github-ascii.txt
 
       - name: Upload QAS artifact
         uses: actions/upload-artifact@v4
@@ -176,17 +176,17 @@ jobs:
 
       - name: Validate PRD health endpoint
         run: |
-          curl -f "${{ vars.MODAL_BASE_URL }}/health"
+          curl -f "${{ vars.MODAL_BASE_URL }}/api/v1/health"
 
       - name: Capture PRD github-ascii endpoint
         run: |
           mkdir -p artifacts/prd
 
           echo "PRD Endpoint:" > artifacts/prd/prd-github-ascii.txt
-          echo "${{ vars.MODAL_BASE_URL }}/github-ascii" >> artifacts/prd/prd-github-ascii.txt
+          echo "${{ vars.MODAL_BASE_URL }}api/v1/github-ascii" >> artifacts/prd/prd-github-ascii.txt
           echo "" >> artifacts/prd/prd-github-ascii.txt
 
-          curl -f "${{ vars.MODAL_BASE_URL }}/github-ascii" >> artifacts/prd/prd-github-ascii.txt
+          curl -f "${{ vars.MODAL_BASE_URL }}api/v1/github-ascii" >> artifacts/prd/prd-github-ascii.txt
 
       - name: Upload PRD artifact
         uses: actions/upload-artifact@v4
