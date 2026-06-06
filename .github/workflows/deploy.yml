@@ -183,10 +183,10 @@ jobs:
           mkdir -p artifacts/prd
 
           echo "PRD Endpoint:" > artifacts/prd/prd-github-ascii.txt
-          echo "${{ vars.MODAL_BASE_URL }}api/v1/github-ascii" >> artifacts/prd/prd-github-ascii.txt
+          echo "${{ vars.MODAL_BASE_URL }}/api/v1/github-ascii" >> artifacts/prd/prd-github-ascii.txt
           echo "" >> artifacts/prd/prd-github-ascii.txt
 
-          curl -f "${{ vars.MODAL_BASE_URL }}api/v1/github-ascii" >> artifacts/prd/prd-github-ascii.txt
+          curl -f "${{ vars.MODAL_BASE_URL }}/api/v1/github-ascii" >> artifacts/prd/prd-github-ascii.txt
 
       - name: Upload PRD artifact
         uses: actions/upload-artifact@v4
