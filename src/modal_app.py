@@ -12,8 +12,7 @@ modal_app_name = os.environ.get(
 )
 
 image = modal.Image.from_registry(
-    docker_image,
-    add_python="3.12",
+    docker_image
 )
 
 app = modal.App(modal_app_name)
