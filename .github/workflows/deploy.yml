@@ -99,10 +99,42 @@ jobs:
         run: |
           modal deploy src/modal_app.py
 
+  validate_qas:
+    name: Validate QAS and upload artifact
+    runs-on: ubuntu-latest
+    needs: deploy_qas
+    environment:
+      name: qas
+
+    steps:
+      - name: Wait for QAS endpoint
+        run: |
+          sleep 20
+
+      - name: Validate QAS health endpoint
+        run: |
+          curl -f "${{ vars.MODAL_BASE_URL }}/health"
+
+      - name: Capture QAS github-ascii endpoint
+        run: |
+          mkdir -p artifacts/qas
+
+          echo "QAS Endpoint:" > artifacts/qas/qas-github-ascii.txt
+          echo "${{ vars.MODAL_BASE_URL }}/github-ascii" >> artifacts/qas/qas-github-ascii.txt
+          echo "" >> artifacts/qas/qas-github-ascii.txt
+
+          curl -f "${{ vars.MODAL_BASE_URL }}/github-ascii" >> artifacts/qas/qas-github-ascii.txt
+
+      - name: Upload QAS artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: qas-github-ascii
+          path: artifacts/qas/qas-github-ascii.txt
+
   deploy_prd:
     name: Deploy to PRD - Modal
     runs-on: ubuntu-latest
-    needs: deploy_qas
+    needs: validate_qas
     environment:
       name: prod
 
@@ -129,3 +161,35 @@ jobs:
       - name: Deploy to Modal PRD
         run: |
           modal deploy src/modal_app.py
+
+  validate_prd:
+    name: Validate PRD and upload artifact
+    runs-on: ubuntu-latest
+    needs: deploy_prd
+    environment:
+      name: prod
+
+    steps:
+      - name: Wait for PRD endpoint
+        run: |
+          sleep 20
+
+      - name: Validate PRD health endpoint
+        run: |
+          curl -f "${{ vars.MODAL_BASE_URL }}/health"
+
+      - name: Capture PRD github-ascii endpoint
+        run: |
+          mkdir -p artifacts/prd
+
+          echo "PRD Endpoint:" > artifacts/prd/prd-github-ascii.txt
+          echo "${{ vars.MODAL_BASE_URL }}/github-ascii" >> artifacts/prd/prd-github-ascii.txt
+          echo "" >> artifacts/prd/prd-github-ascii.txt
+
+          curl -f "${{ vars.MODAL_BASE_URL }}/github-ascii" >> artifacts/prd/prd-github-ascii.txt
+
+      - name: Upload PRD artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: prd-github-ascii
+          path: artifacts/prd/prd-github-ascii.txt
