@@ -3,13 +3,16 @@ FROM python:3.12-slim
 
 WORKDIR /app
 
-COPY ./src /app/src
 COPY pyproject.toml poetry.lock /app/
 
-RUN pip install poetry && \
+RUN pip install --upgrade pip && \
+    pip install poetry && \
     poetry config virtualenvs.create false && \
-    poetry install --no-dev
+    poetry install --only main --no-root
 
-EXPOSE 8000
+COPY ./src /app/src
+COPY ./models /app/models
 
-CMD ["uvicorn", "src.core.server:app", "--host=0.0.0.0", "--port=80"]
+EXPOSE 80
+
+CMD ["uvicorn", "src.core.server:app", "--host", "0.0.0.0", "--port", "80"]
